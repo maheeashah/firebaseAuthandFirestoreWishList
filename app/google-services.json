@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "550200787631",
+    "project_id": "fir-authfirestorewishlis-7be06",
+    "storage_bucket": "fir-authfirestorewishlis-7be06.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:550200787631:android:0699e43768d38836230a5a",
+        "android_client_info": {
+          "package_name": "com.example.wishlist"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "550200787631-ivlplqqq88v49v5v9kqbj22ouqpvmser.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAH8M1pu4WiDt1dBjtCXSmXL53iKEFyLWg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "550200787631-ivlplqqq88v49v5v9kqbj22ouqpvmser.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
