@@ -109,9 +109,29 @@ public class MainActivity extends AppCompatActivity {
         else {
 
             // code to sign in user
-/* 
- * Enter Firebase Code here CODE here
- */
+            firebaseHelper.getmAuth().signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()){
+                                //updating MY var for uid of current user
+                                firebaseHelper.updateUid(firebaseHelper.getmAuth().getCurrentUser().getUid());
+                                Log.i(TAG, email + "is signed in");
+
+                                //this will help us with asych method calls
+                                firebaseHelper.attachReadDataToUser();
+                                //we can do any other ui updating or change screens based on how
+                                //our app should respond
+                                updateIfLoggedIn();
+
+                                Intent intent = new Intent(MainActivity.this, AddItemActivity.class);
+                                startActivity(intent);
+                            }
+                            else{
+                                Log.d(TAG, email + "failed to log in");
+                            }
+                        }
+                    });
 
         }
     }
@@ -140,10 +160,34 @@ public class MainActivity extends AppCompatActivity {
         else {
             // code to sign up user
             
- /* 
- * Enter Firebase Code here CODE here
- */
+    firebaseHelper.getmAuth().createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful())
+                        //user account was created in firebase auth
+                        Log.i(TAG, email + "account created");
+                    FirebaseUser user = firebaseHelper.getmAuth().getCurrentUser();
 
+                    //update FirebaseHelper var uid to equal the uid of currently signed in user
+                    firebaseHelper.updateUid(user.getUid());
+
+                    //add a document to our database to represent this user
+                    firebaseHelper.addUserToFirestore(name, user.getUid());
+
+                    //choose whatever actions you want- update UI, switch to new screen, etc.
+                    //take user to the screen where they can enter wish list items
+                    //getApplicationContext() will get the activity we are currently in that is sending the
+                    //intent. Similar to how we said "this" in the past
+                    Intent intent = new Intent(getApplicationContext(), AddItemActivity.class);
+                    startActivity(intent);
+                }
+                else{
+                    //user WASN'T created
+                    Log.d(TAG, email + "sign up failed");
+                }
+
+            });
 
         }
 
@@ -158,15 +202,17 @@ public class MainActivity extends AppCompatActivity {
 
     public void signOutUser(View v) {
         // firebaseHelper code to sign out
+        //do I need getInstance()
+        firebaseHelper.getmAuth().getInstance().signOut();
+        firebaseHelper.updateUid(null); //no "" on null
+        Log.i(TAG, "user logged out");
 
-/* 
- * Enter Firebase Code here CODE here
- */
-        
+
         
         nameET.setText("");
         emailET.setText("");
         passwordET.setText("");
+        //refresh the ui for a new user to log in
         updateIfLoggedIn();
     }
 
