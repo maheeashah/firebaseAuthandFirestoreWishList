@@ -44,17 +44,26 @@ import java.util.concurrent.Executor;
 public class FirebaseHelper {
     public final String TAG = "Denna";
     private static String uid = null;            // var will be updated for currently signed in user
-    // inside MainActivity with the mAuth var
+    //Create 2 instance vars for FirebaseAuth and Firebase firestorw that will give me access to
+    //my project on firebase. The json file is what links this pp to that project
+
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
 
 
     private ArrayList<WishListItem> myItems = new ArrayList<>();
 
     public FirebaseHelper() {
-
+        //instantiate mAuth and db by calling the getInstance() method and this will create the
+        //connection to the instance of Auth and Firestore to this project
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+        //we need to connect the data reading to logged in user if applicable
+        attachReadDataToUser();
     }
 
     public FirebaseAuth getmAuth() {
-
+        return mAuth;
     }
 
     public void attachReadDataToUser() {
@@ -72,6 +81,7 @@ public class FirebaseHelper {
 
     public ArrayList<WishListItem> getWishListItems() {
 
+         return null;
     }
     
     public void editData(WishListItem w) {
@@ -94,12 +104,13 @@ public class FirebaseHelper {
      */
 
     private void readData(FirestoreCallback firestoreCallback) {
-
+    
 }
 
 //https://stackoverflow.com/questions/48499310/how-to-return-a-documentsnapshot-as-a-result-of-a-method/48500679#48500679
 public interface FirestoreCallback {
-
+        //we use the ArrayList of the data type we are working with in Firestore
+    void onCallback(ArrayList<WishListItem>myList);
 }
 }
 

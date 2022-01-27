@@ -182,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(), AddItemActivity.class);
                     startActivity(intent);
                 }
-                else{
+                else {
                     //user WASN'T created
                     Log.d(TAG, email + "sign up failed");
                 }
@@ -202,8 +202,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void signOutUser(View v) {
         // firebaseHelper code to sign out
-        //do I need getInstance()
-        firebaseHelper.getmAuth().getInstance().signOut();
+        //do I need getInstance() - no
+        firebaseHelper.getmAuth().signOut();
         firebaseHelper.updateUid(null); //no "" on null
         Log.i(TAG, "user logged out");
 
@@ -220,10 +220,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, ViewListActivity.class);
         // use firebaseHelperCode to get List of data to display
 
-/* 
- * Enter Firebase Code here CODE here
- */
-        
+        //get array list of wishlist items from data base
+        ArrayList<WishListItem> myList = firebaseHelper.getWishListItems();
+        intent.getParcelableArrayListExtra("LIST", myList);
         startActivity(intent);
     }
 
