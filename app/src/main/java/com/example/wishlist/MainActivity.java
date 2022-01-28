@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
             signOutButton.setVisibility(View.VISIBLE);
             showListButton.setVisibility(View.VISIBLE);
             addItemButton.setVisibility(View.VISIBLE);
+            signUpResultTextView.setText(user.getEmail() + "is signed in");
         }
         else {
             signInButton.setVisibility(View.VISIBLE);
@@ -82,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
             signOutButton.setVisibility(View.INVISIBLE);
             showListButton.setVisibility(View.INVISIBLE);
             addItemButton.setVisibility(View.INVISIBLE);
-            signUpResultTextView.setText("");
+            signUpResultTextView.setText("No one is signed in");
             nameET.setText("");
             emailET.setText("");
             passwordET.setText("");
@@ -174,6 +175,9 @@ public class MainActivity extends AppCompatActivity {
 
                     //add a document to our database to represent this user
                     firebaseHelper.addUserToFirestore(name, user.getUid());
+
+                    //let's further investigate why this method call is needed
+                    firebaseHelper.attachReadDataToUser();
 
                     //choose whatever actions you want- update UI, switch to new screen, etc.
                     //take user to the screen where they can enter wish list items

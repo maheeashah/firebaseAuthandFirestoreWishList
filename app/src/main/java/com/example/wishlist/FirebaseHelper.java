@@ -72,8 +72,32 @@ public class FirebaseHelper {
 
 
     public void addUserToFirestore(String name, String newUID) {
+        //Create a new user with their name
+        //Use a simple HashMap
+        Map<String, Object> user = new HashMap<>();
+        user.put("name", name); //adding data that is in the parameter name
+                                    // it will be called "name" in the firestore database
+        //Add a new document to the collection called users with docID = UID of the
+        //authorized user. By passing in new UID a param to document, we are able to tell the document what we want its docID
+        //too be equal to
 
-    }
+        db.collection("users").document(newUID)
+                .set(user)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Log.i(TAG, name + "'s user account added");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "Error adding user account", e);
+                    }
+                });
+
+        }
+
 
     public void addData(WishListItem wish) {
 
@@ -104,13 +128,34 @@ public class FirebaseHelper {
      */
 
     private void readData(FirestoreCallback firestoreCallback) {
-    
+    //This is necessary to avoid the issues we have ran into with data displaying before we return from the async get method
+
+        //Clear out array list of data
+        myItems.clear();
+        db.collection("users").document(uid).collection("myWishList")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+                            //iterate through all the items in the query
+                            //each item is a document snapshot
+                            for (DocumentSnapshot doc: task.getResult()) {
+                                WishListItem w = doc.toObject(WishListItem.class);
+                                myItems.add(w);
+                            }
+                            //I am done getting all the data
+                            Log.i(TAG, "Success reading all data: " + myItems.toString());
+                            firestoreCallback.onCallback(myItems);
+                        }
+                    }
+                });
 }
 
 //https://stackoverflow.com/questions/48499310/how-to-return-a-documentsnapshot-as-a-result-of-a-method/48500679#48500679
 public interface FirestoreCallback {
         //we use the ArrayList of the data type we are working with in Firestore
     void onCallback(ArrayList<WishListItem>myList);
-}
+    }
 }
 
