@@ -67,7 +67,20 @@ public class FirebaseHelper {
     }
 
     public void attachReadDataToUser() {
-
+        //this method will do an initial read of database when we log in OR create a user
+        if (mAuth.getCurrentUser() != null) {
+            //redundant??
+            uid = mAuth.getUid();
+            readData(new FirestoreCallback() {
+                @Override
+                public void onCallback(ArrayList<WishListItem> myList) {
+                    Log.i(TAG, "Inside attachReadDataToUser, onCallBack");
+                }
+            });
+        }
+        else {
+            Log.i(TAG, "No one is logged in");
+        }
     }
 
 
@@ -100,21 +113,55 @@ public class FirebaseHelper {
 
 
     public void addData(WishListItem wish) {
+        //This is the method that is called from the activity
+        //It receives the WishListItem we want to add to firestore
+        //This method is overloaded with a private addData method that incorporates
+        //the interface
+
+        addData(wish, new FirestoreCallback() {
+            @Override
+            public void onCallback(ArrayList<WishListItem> myList) {
+                Log.i(TAG, "Inside addData, onCallBack");
+            }
+        });
+    }
+
+        private void addData(WishListItem w, FirestoreCallback firestoreCallback) {
+        db.collection("users").document(uid).collection("myWishList")
+                .add(w)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        //comments
+                        db.collection("users").document(uid).collection("myWishList")
+                                .document(documentReference.getId())
+                                .update("docId", documentReference.getId() );
+                        Log.i(TAG, "just added" + w.getItemName());
+                        readData(firestoreCallback);
+                    }
+                });
 
     }
 
-    public ArrayList<WishListItem> getWishListItems() {
+    public ArrayList<WishListItem> getWishListItems() {return myItems;}
+        private void getData(WishListItem w, FirestoreCallback firestoreCallback) {
 
-         return null;
-    }
+        }
+
+
+
     
-    public void editData(WishListItem w) {
+    public void editData(WishListItem w) {}
+        private void editData(WishListItem w, FirestoreCallback firestoreCallback) {
 
-    }
+        }
 
-    public void deleteData(WishListItem w) {
 
-    }
+    public void deleteData(WishListItem w) {}
+        private void deleteData(WishListItem w, FirestoreCallback firestoreCallback) {
+
+        }
+
 
     public void updateUid(String uid) {
 

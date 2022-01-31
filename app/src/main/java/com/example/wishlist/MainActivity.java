@@ -129,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
                                 startActivity(intent);
                             }
                             else{
+                                //user WASN'T created
                                 Log.d(TAG, email + "failed to log in");
                             }
                         }
@@ -157,45 +158,44 @@ public class MainActivity extends AppCompatActivity {
         // verify password is at least 6 char long (otherwise firebase will deny)
         else if (password.length() < 6) {
             Toast.makeText(getApplicationContext(), "Password must be at least 6 char long", Toast.LENGTH_SHORT).show();
-        }
-        else {
+        } else {
             // code to sign up user
-            
-    firebaseHelper.getmAuth().createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful())
-                        //user account was created in firebase auth
-                        Log.i(TAG, email + "account created");
-                    FirebaseUser user = firebaseHelper.getmAuth().getCurrentUser();
 
-                    //update FirebaseHelper var uid to equal the uid of currently signed in user
-                    firebaseHelper.updateUid(user.getUid());
+            firebaseHelper.getmAuth().createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                //user account was created in firebase auth
+                                Log.i(TAG, email + "account created");
+                                FirebaseUser user = firebaseHelper.getmAuth().getCurrentUser();
 
-                    //add a document to our database to represent this user
-                    firebaseHelper.addUserToFirestore(name, user.getUid());
+                                //update FirebaseHelper var uid to equal the uid of currently signed in user
+                                firebaseHelper.updateUid(user.getUid());
 
-                    //let's further investigate why this method call is needed
-                    firebaseHelper.attachReadDataToUser();
+                                //add a document to our database to represent this user
+                                firebaseHelper.addUserToFirestore(name, user.getUid());
 
-                    //choose whatever actions you want- update UI, switch to new screen, etc.
-                    //take user to the screen where they can enter wish list items
-                    //getApplicationContext() will get the activity we are currently in that is sending the
-                    //intent. Similar to how we said "this" in the past
-                    Intent intent = new Intent(getApplicationContext(), AddItemActivity.class);
-                    startActivity(intent);
-                }
-                else {
-                    //user WASN'T created
-                    Log.d(TAG, email + "sign up failed");
-                }
+                                //let's further investigate why this method call is needed
+                                firebaseHelper.attachReadDataToUser();
 
-            });
+                                //choose whatever actions you want- update UI, switch to new screen, etc.
+                                //take user to the screen where they can enter wish list items
+                                //getApplicationContext() will get the activity we are currently in that is sending the
+                                //intent. Similar to how we said "this" in the past
+                                Intent intent = new Intent(getApplicationContext(), AddItemActivity.class);
+                                startActivity(intent);
+                            } else {
+                                //user WASN'T created
+                                Log.d(TAG, email + "sign up failed");
+                            }
 
+                        }
+
+                    });
+
+            updateIfLoggedIn();
         }
-
-        updateIfLoggedIn();
     }
 
 
@@ -226,7 +226,7 @@ public class MainActivity extends AppCompatActivity {
 
         //get array list of wishlist items from data base
         ArrayList<WishListItem> myList = firebaseHelper.getWishListItems();
-        intent.getParcelableArrayListExtra("LIST", myList);
+        intent.putParcelableArrayListExtra("LIST", myList);
         startActivity(intent);
     }
 
