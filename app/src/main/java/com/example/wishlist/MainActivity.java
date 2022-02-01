@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
             showListButton.setVisibility(View.VISIBLE);
             addItemButton.setVisibility(View.VISIBLE);
             signUpResultTextView.setText(user.getEmail() + "is signed in");
+            firebaseHelper.attachReadDataToUser();
         }
         else {
             signInButton.setVisibility(View.VISIBLE);

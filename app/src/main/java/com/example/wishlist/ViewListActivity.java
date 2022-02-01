@@ -23,9 +23,10 @@ public class ViewListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_list);
 
-        // Get ArrayList of WishListItems from MainActivity (that was pulled from firestore)
-        Intent intent = getIntent();
+
+        //Intent intent = getIntent();
         // get list of data from firebasehelper
+        myList = MainActivity.firebaseHelper.getWishListItems();
 
         // The ArrayAdapter is what will take the data from the ArrayList and feed it to the ListView
         ArrayAdapter<WishListItem> listAdapter = new ArrayAdapter<>(
@@ -40,6 +41,7 @@ public class ViewListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 // Creates an intent to go from the full wish list to edit or delete one item
+                //in this case i refers to the index in array list
                 Intent intent = new Intent(ViewListActivity.this, EditItemActivity.class);
 
                 // Sends the specific object at index i to the Edit activity

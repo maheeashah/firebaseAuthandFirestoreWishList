@@ -135,9 +135,15 @@ public class FirebaseHelper {
                         //comments
                         db.collection("users").document(uid).collection("myWishList")
                                 .document(documentReference.getId())
-                                .update("docId", documentReference.getId() );
+                                .update("docID", documentReference.getId() );
                         Log.i(TAG, "just added" + w.getItemName());
                         readData(firestoreCallback);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "item failed to add ", e);
                     }
                 });
 
@@ -171,7 +177,7 @@ public class FirebaseHelper {
     This video is good!!!   Basically he talks about what it means for tasks to be asychronous
     and how you can create an interface and then using that interface pass an object of the interface
     type from a callback method and access it after the callback method.  It also allows you to delay
-    certain things from occuring until after the onSuccess is finished.
+    certain things from occurring until after the onSuccess is finished.
      */
 
     private void readData(FirestoreCallback firestoreCallback) {
