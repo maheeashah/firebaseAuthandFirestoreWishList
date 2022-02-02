@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
             showListButton.setVisibility(View.VISIBLE);
             addItemButton.setVisibility(View.VISIBLE);
             signUpResultTextView.setText(user.getEmail() + "is signed in");
-            firebaseHelper.attachReadDataToUser();
+            //firebaseHelper.attachReadDataToUser();
         }
         else {
             signInButton.setVisibility(View.VISIBLE);
@@ -210,6 +210,7 @@ public class MainActivity extends AppCompatActivity {
         //do I need getInstance() - no
         firebaseHelper.getmAuth().signOut();
         firebaseHelper.updateUid(null); //no "" on null
+        updateIfLoggedIn();
         Log.i(TAG, "user logged out");
 
 
@@ -218,7 +219,6 @@ public class MainActivity extends AppCompatActivity {
         emailET.setText("");
         passwordET.setText("");
         //refresh the ui for a new user to log in
-        updateIfLoggedIn();
     }
 
     public void showList(View v) {
@@ -226,8 +226,8 @@ public class MainActivity extends AppCompatActivity {
         // use firebaseHelperCode to get List of data to display
 
         //get array list of wishlist items from data base
-        ArrayList<WishListItem> myList = firebaseHelper.getWishListItems();
-        intent.putParcelableArrayListExtra("LIST", myList);
+       // ArrayList<WishListItem> myList = firebaseHelper.getWishListItems();
+       // intent.putParcelableArrayListExtra("LIST", myList);
         startActivity(intent);
     }
 
