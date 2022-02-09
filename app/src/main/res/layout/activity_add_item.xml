@@ -28,9 +28,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/itemNameET" />
 
+    <EditText
+        android:id="@+id/itempriceET"
+        style="@style/myEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="104dp"
+        android:ems="10"
+        android:hint="       Price of Item     "
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/itemNameET" />
+
     <Button
         android:id="@+id/addItemButton"
         style="@style/submitButton"
+        android:layout_marginTop="104dp"
         android:onClick="addData"
         android:text="Add item"
         app:layout_constraintEnd_toEndOf="@+id/itemLocation"
@@ -39,18 +53,21 @@
     <Button
         android:id="@+id/showListButton"
         style="@style/myButton"
-        android:text="Show List"
+        android:layout_marginTop="104dp"
         android:onClick="seeList"
+        android:text="Show List"
         app:layout_constraintStart_toStartOf="@+id/itemLocation"
         app:layout_constraintTop_toBottomOf="@+id/itemLocation" />
 
     <Button
         android:id="@+id/signOutButton2"
         style="@style/myButton"
+        android:layout_marginTop="44dp"
         android:onClick="goHome"
         android:text="Home"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/addItemButton" />
 

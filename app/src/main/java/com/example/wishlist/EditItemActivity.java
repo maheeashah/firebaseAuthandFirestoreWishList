@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 public class EditItemActivity extends AppCompatActivity {
 
-    private EditText itemNameET, itemLocation;
+    private EditText itemNameET, itemLocation, itemPrice;
     private WishListItem w;
 
     @Override
@@ -20,19 +20,23 @@ public class EditItemActivity extends AppCompatActivity {
 
         itemLocation = findViewById(R.id.itemLocation);
         itemNameET = findViewById(R.id.itemNameET);
+        itemPrice = findViewById(R.id.itempriceET);
 
         Intent intent = getIntent();
         w = intent.getParcelableExtra("ITEM_TO_EDIT");
         itemNameET.setText(w.getItemName());
         itemLocation.setText(w.getItemLocation());
+       // itemPrice.setText(w.getItemPrice());
     }
 
     public void updateData(View v) {
         String newName = itemNameET.getText().toString();
         String newLocation = itemLocation.getText().toString();
+        Double newPrice = Double.valueOf(itemPrice.getText().toString());
         String docID = w.getDocID();
         w.setItemLocation(newLocation);
         w.setItemName(newName);
+        w.setItemPrice(newPrice);
         // firebaseHelper code
         MainActivity.firebaseHelper.editData(w);
         Toast.makeText(this, "Data updated", Toast.LENGTH_SHORT).show();
@@ -45,11 +49,11 @@ public class EditItemActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void deleteItem(View v) {
-        // firebaseHelper code
-        MainActivity.firebaseHelper.deleteData(w);
-        Toast.makeText(this, "Data updated", Toast.LENGTH_SHORT).show();
-    }
+   // public void deleteItem(View v) {
+   //     // firebaseHelper code
+   //     MainActivity.firebaseHelper.deleteData(w);
+  //      Toast.makeText(this, "Data updated", Toast.LENGTH_SHORT).show();
+  //  }
 
     public void goHome(View v) {
         Intent intent = new Intent(EditItemActivity.this, MainActivity.class);

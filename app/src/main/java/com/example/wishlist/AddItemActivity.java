@@ -12,8 +12,9 @@ import java.util.ArrayList;
 public class AddItemActivity extends AppCompatActivity {
 
     private String itemName, itemLocation;
+    private Double itemPrice;
     private int itemPriority;
-    private EditText nameET, locationET;
+    private EditText nameET, locationET, priceET;
 
 
     @Override
@@ -23,10 +24,17 @@ public class AddItemActivity extends AppCompatActivity {
 
         nameET = findViewById(R.id.itemNameET);
         locationET = findViewById(R.id.itemLocation);
+        priceET = findViewById(R.id.itempriceET);
 
     }
 
     public void seeList(View v) {
+        // will go to activity that displays all data in a listview
+        Intent intent = new Intent(AddItemActivity.this, ViewListActivity.class);
+        startActivity(intent);
+    }
+
+    public void addPrice(View v) {
         // will go to activity that displays all data in a listview
         Intent intent = new Intent(AddItemActivity.this, ViewListActivity.class);
         startActivity(intent);
@@ -42,11 +50,12 @@ public class AddItemActivity extends AppCompatActivity {
         itemLocation = locationET.getText().toString();
         itemPriority = 1;       // may update later w spinner
 
-        WishListItem wishListItem = new WishListItem(itemName, itemLocation, itemPriority);
+        WishListItem wishListItem = new WishListItem(itemName, itemLocation, itemPrice, itemPriority);
         //insert firebaseHelper code to addData
         MainActivity.firebaseHelper.addData(wishListItem);
         nameET.setText("");
         locationET.setText("");
+        priceET.setText("");
 
     }
 }

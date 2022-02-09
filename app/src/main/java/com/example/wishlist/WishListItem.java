@@ -3,7 +3,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class WishListItem implements Parcelable {
-    private String itemName, itemLocation, docID;
+    private String itemName;
+    private String itemLocation;
+    private Double itemPrice;
+    private String docID;
     private int itemPriority;
 
         // may be implemented later so we can sort by order of importance on list
@@ -35,6 +38,7 @@ public class WishListItem implements Parcelable {
     public WishListItem(Parcel parcel) {
         itemName = parcel.readString();
         itemLocation = parcel.readString();
+        itemPrice = Double.valueOf(parcel.readString());
         itemPriority = parcel.readInt();
         docID = parcel.readString();
     }
@@ -56,34 +60,38 @@ public class WishListItem implements Parcelable {
      */
     public void writeToParcel(Parcel dest, int i) {
         dest.writeString(itemName);
+        dest.writeString(String.valueOf(itemPrice));
         dest.writeString(itemLocation);
         dest.writeInt(itemPriority);
         dest.writeString(docID);
     }
 
-    public WishListItem(String itemName, String itemLocation, int itemPriority, String docID) {
+    public WishListItem(String itemName, String itemLocation, Double itemPrice, int itemPriority, String docID) {
         this.itemName = itemName;
         this.itemLocation = itemLocation;
+        this.itemPrice = itemPrice;
         this.itemPriority = itemPriority;
         this.docID = docID;
     }
 
-    public WishListItem(String itemName, String itemLocation, int itemPriority) {
+    public WishListItem(String itemName, String itemLocation, double itemPrice, int itemPriority) {
         this.itemName = itemName;
         this.itemLocation = itemLocation;
+        this.itemPrice = itemPrice;
         this.itemPriority = itemPriority;
         this.docID = "No docID yet";
     }
 
-    public WishListItem() {
+    public WishListItem(String itemName, String itemLocation, Double itemPrice, int itemPriority) {
         this.itemName = "";
         this.itemLocation = "";
+        this.itemPrice = Double.valueOf("");
         this.itemPriority = 5;
         this.docID = "No docID yet";
     }
 
     public String toString() {
-        return itemName + " at " + itemLocation;
+        return itemName + " at " + itemLocation + "for $" + itemPrice;
     }
 
     public String getItemName() {
@@ -100,6 +108,14 @@ public class WishListItem implements Parcelable {
 
     public void setItemLocation(String itemLocation) {
         this.itemLocation = itemLocation;
+    }
+
+    public Double getItemPrice() {
+        return itemPrice;
+    }
+
+    public void setItemPrice(Double itemPrice) {
+        this.itemPrice = itemPrice;
     }
 
     public int getItemPriority() {
